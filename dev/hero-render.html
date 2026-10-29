@@ -1,0 +1,56 @@
+<!doctype html><html><body style="margin:0;background:#0c1b17"><div id="w" style="width:1920px;height:1080px"><canvas id="c" style="width:100%;height:100%;display:block"></canvas></div>
+<script type="module">
+import * as THREE from 'three';
+import { Stage } from '/src/viewer/stage.js';
+import { loadBody } from '/src/viewer/body.js';
+import { Tattoo } from '/src/viewer/tattoos.js';
+import { resolveZones } from '/src/viewer/zones.js';
+import { FLASH, rasterizeSvg } from '/src/designs/flash.js';
+const st = new Stage(document.getElementById('c'));
+st.visible = false; // we drive frames manually
+st.renderer.setPixelRatio(1);
+st.renderer.setClearColor('#10241e', 1);
+const b = await loadBody(); st.scene.add(b.group);
+b.setSkin('#b67b51');
+const zones = resolveZones(b);
+const feather = await rasterizeSvg(FLASH.find(d => d.id === 'chakra').svg(), 1400);
+const z = zones['upper-back'];
+const t = new Tattoo({ design: { ...feather, name: 'Mor', colour: false }, anchor: { face: z.face, bary: z.bary }, sizeCm: 17, rotation: 0, ink: 'black', age: 0.3, upHint: z.upHint });
+t.rebuild(b); st.scene.add(t.mesh);
+const full = document.createElement('canvas'); full.width = t.texture.image.width; full.height = t.texture.image.height;
+full.getContext('2d').drawImage(t.texture.image, 0, 0);
+const target = t.point.clone().add(new THREE.Vector3(0.0, 0.03, 0));
+st.camera.fov = 26; 
+const ease = (x) => x < 0.5 ? 4*x*x*x : 1 - Math.pow(-2*x+2, 3)/2;
+window.frame = (i, N) => {
+  const k = i / (N - 1);
+  // camera: slow dolly around the shoulder
+  const az = Math.PI + 0.55 - 0.42 * ease(k);
+  const el = 0.06 + 0.05 * k;
+  const dist = 1.05 - 0.12 * ease(k);
+  st.controls.target.copy(target);
+  st.camera.position.set(Math.sin(az)*Math.cos(el)*dist, Math.sin(el)*dist, Math.cos(az)*Math.cos(el)*dist).add(target);
+  st.camera.lookAt(target);
+  st.camera.setViewOffset(1920, 1080, -380, 60, 1920, 1080);
+  st.camera.updateProjectionMatrix();
+  // reveal: bottom of the quill upward, soft drawing edge; fade out in the last 10%
+  const rv = Math.min(1, Math.max(0, (k - 0.12) / 0.62));
+  const out = k > 0.92 ? 1 - (k - 0.92) / 0.08 : 1;
+  const c = t.texture.image, g = c.getContext('2d');
+  g.clearRect(0, 0, c.width, c.height);
+  g.globalAlpha = out;
+  g.drawImage(full, 0, 0);
+  g.globalAlpha = 1;
+  g.globalCompositeOperation = 'destination-in';
+  const R = Math.hypot(c.width, c.height) * 0.5 * ease(rv) * 1.05;
+  const grd = g.createRadialGradient(c.width/2, c.height/2, Math.max(0, R - 70), c.width/2, c.height/2, R + 1);
+  grd.addColorStop(0, 'rgba(0,0,0,1)'); grd.addColorStop(1, 'rgba(0,0,0,0)');
+  g.fillStyle = grd; g.fillRect(0, 0, c.width, c.height);
+  g.globalCompositeOperation = 'source-over';
+  t.texture.needsUpdate = true;
+  st.controls.update = () => {};
+  st.renderer.render(st.scene, st.camera);
+  return st.canvas.toDataURL('image/jpeg', 0.93);
+};
+window.ready = true;
+</script></body></html>

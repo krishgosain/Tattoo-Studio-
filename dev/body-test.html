@@ -1,0 +1,11 @@
+<!doctype html><html><body style="margin:0;background:#12241e"><div id="w" style="width:100vw;height:100vh"><canvas id="c" style="width:100%;height:100%;display:block"></canvas></div>
+<script type="module">
+import { Stage } from '/src/viewer/stage.js';
+import { loadBody } from '/src/viewer/body.js';
+import * as THREE from 'three';
+const st = new Stage(document.getElementById('c'));
+const b = await loadBody();
+st.scene.add(b.group);
+window.view = (az, female=0, tgtY=0.9, dist=4.6) => { b.setFemale(female); b.bake(); st.flight=null; const t=new THREE.Vector3(0,tgtY,0); st.controls.target.copy(t); st.camera.position.set(Math.sin(az)*dist, tgtY+0.1, Math.cos(az)*dist); st.controls.update(); };
+window.B=b; window.THREE=THREE; window.ready = true;
+</script></body></html>

@@ -1,0 +1,6 @@
+<!doctype html><html><body style="margin:0;background:#e9dccb;display:grid;grid-template-columns:repeat(5,1fr);gap:8px;padding:8px">
+<script type="module">
+import { FLASH, flashThumb } from '/src/designs/flash.js';
+for (const d of FLASH) { const fig=document.createElement('figure'); fig.style.cssText='margin:0;background:#fff;height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;font:12px sans-serif'; fig.innerHTML=`<img src="${flashThumb(d)}" style="max-width:90%;max-height:260px"><figcaption>${d.name}</figcaption>`; document.body.appendChild(fig); }
+window.ready=true;
+</script></body></html>

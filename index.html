@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Siyahi — Fine-line tattoo atelier, Bandra</title>
+  <meta name="description" content="Design your tattoo on a 3D body before you book. Describe any idea, place it anywhere, see it on your skin tone. Fine-line tattoo atelier on Pali Hill, Bandra West, Mumbai." />
+  <meta name="theme-color" content="#0c1b17" />
+  <meta property="og:title" content="Siyahi — see it on skin before it's forever" />
+  <meta property="og:description" content="Describe any tattoo idea, place it anywhere on a 3D body, and book with the preview." />
+  <meta property="og:image" content="/og.jpg" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/src/styles.css" />
+</head>
+<body>
+  <a class="skip" href="#try">Skip to the 3D designer</a>
+
+  <header class="nav" data-nav>
+    <a class="brand" href="#top" aria-label="Siyahi, home">
+      <span class="brand-native" lang="hi">स्याही</span>
+      <span class="brand-latin">Siyahi</span>
+    </a>
+    <nav aria-label="Main">
+      <a href="#try">Try it on</a>
+      <a href="#flash">Flash</a>
+      <a href="#artists">Artists</a>
+      <a href="#prices">Prices</a>
+      <a href="#visit">Visit</a>
+    </nav>
+    <button class="btn btn-small" data-open-booking>Book a consult</button>
+  </header>
+
+  <main id="top">
+    <!-- HERO -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-media" aria-hidden="true">
+        <video class="hero-video" autoplay muted loop playsinline preload="auto" poster="/media/hero-poster.jpg">
+          <source src="/media/hero.mp4" type="video/mp4" />
+        </video>
+        <div class="hero-shade"></div>
+      </div>
+      <div class="hero-copy">
+        <p class="hero-kicker"><span lang="hi">स्याही</span> is ink. We are a fine-line tattoo atelier on Pali Hill, Bandra.</p>
+        <h1 id="hero-title" class="hero-title">See it on skin before it’s forever.</h1>
+        <p class="hero-lede">Describe any idea in your own words, or pick from our flash. Place it anywhere on a 3D body in your skin tone, resize it to the centimetre, and walk in knowing exactly what you will get.</p>
+        <div class="hero-actions">
+          <a class="btn" href="#try">Design your tattoo</a>
+          <a class="btn btn-ghost" href="#flash">Browse the flash</a>
+        </div>
+      </div>
+      <p class="hero-foot">Open Tuesday to Sunday. Consults are free and take fifteen minutes.</p>
+    </section>
+
+    <!-- CONFIGURATOR -->
+    <section class="studio" id="try" aria-labelledby="try-title">
+      <div class="studio-head">
+        <h2 id="try-title" class="display">See it on the body</h2>
+        <p class="studio-sub">Pick or describe a design, then tap the body to place it. Drag it to move, use the sliders to size and turn it.</p>
+        <div class="seg" role="tablist" aria-label="Preview mode">
+          <button role="tab" aria-selected="true" data-mode="3d">3D body</button>
+          <button role="tab" aria-selected="false" data-mode="photo">On my photo</button>
+        </div>
+      </div>
+
+      <div class="studio-grid">
+        <!-- viewer -->
+        <div class="viewer" data-viewer>
+          <div class="stage-wrap" data-stage-wrap>
+            <canvas class="stage" data-stage aria-label="3D body. Tap to place the tattoo, drag the tattoo to move it, drag elsewhere to turn the body."></canvas>
+            <div class="loader" data-loader><span class="loader-ink"></span><span data-loader-text>Preparing the body</span></div>
+            <div class="viewer-top">
+              <div class="seg seg-small" aria-label="View">
+                <button data-view="front" aria-pressed="true">Front</button>
+                <button data-view="back">Back</button>
+                <button data-view="left">Left</button>
+                <button data-view="right">Right</button>
+              </div>
+              <div class="seg seg-small" aria-label="Body">
+                <button data-sex="1">Woman</button>
+                <button data-sex="0" aria-pressed="true">Man</button>
+              </div>
+            </div>
+            <p class="viewer-hint" data-hint>Tap anywhere on the body to place your design</p>
+            <div class="viewer-bottom">
+              <div class="layers" data-layers aria-label="Tattoos on this body"></div>
+              <div class="viewer-tools">
+                <button class="icon-btn" data-reset-view title="Reset view" aria-label="Reset view"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v5h5"/></svg></button>
+                <button class="icon-btn" data-snapshot title="Save image" aria-label="Save image"><svg viewBox="0 0 24 24"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 19h14"/></svg></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- photo try-on -->
+          <div class="photo-wrap" data-photo hidden>
+            <canvas class="photo-canvas" data-photo-canvas aria-label="Your photo with the tattoo overlaid. Drag to move, scroll or pinch to resize."></canvas>
+            <div class="photo-empty" data-photo-empty>
+              <p class="photo-empty-title">Try it on your own skin</p>
+              <p>Take a well-lit photo of the spot, straight on. The design follows your skin’s light and shadow.</p>
+              <div class="photo-actions">
+                <label class="btn">Upload a photo<input type="file" accept="image/*" data-photo-input hidden /></label>
+                <button class="btn btn-ghost" data-photo-camera>Use camera</button>
+              </div>
+              <p class="fine">Your photo stays on this device. Nothing is uploaded.</p>
+            </div>
+            <video class="photo-video" data-photo-video playsinline muted hidden></video>
+            <div class="photo-tools" data-photo-tools hidden>
+              <label class="mini-range">Curve <input type="range" min="0" max="100" value="25" data-photo-curve /></label>
+              <button class="btn btn-small btn-ghost" data-photo-capture hidden>Take photo</button>
+              <button class="btn btn-small btn-ghost" data-photo-change>Change photo</button>
+              <button class="btn btn-small" data-photo-save>Save image</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- control panel -->
+        <aside class="panel" aria-label="Design controls">
+          <section class="step" aria-labelledby="s1">
+            <h3 class="step-title" id="s1"><span class="step-n">1</span>Design</h3>
+            <div class="tabs" role="tablist" aria-label="Design source">
+              <button role="tab" aria-selected="true" data-src="flash">Flash</button>
+              <button role="tab" aria-selected="false" data-src="describe">Describe</button>
+              <button role="tab" aria-selected="false" data-src="letter">Lettering</button>
+              <button role="tab" aria-selected="false" data-src="upload">Upload</button>
+            </div>
+
+            <div class="src" data-pane="flash">
+              <div class="flash-strip" data-flash-strip></div>
+              <p class="picked" data-picked></p>
+            </div>
+
+            <div class="src" data-pane="describe" hidden>
+              <label class="field-label" for="idea">Describe your own</label>
+              <textarea id="idea" rows="2" maxlength="280" placeholder="A puppy reading the newspaper" data-idea></textarea>
+              <div class="chips chips-tight" data-styles aria-label="Style"></div>
+              <div class="ideas" data-ideas></div>
+              <button class="btn btn-wide" data-generate>Sketch it</button>
+              <div class="gen-status" data-gen-status hidden>
+                <div class="gen-bar"><span data-gen-bar></span></div>
+                <p data-gen-text>Sketching your fine-line design, about 20 seconds</p>
+              </div>
+              <div class="gen-results" data-gen-results></div>
+            </div>
+
+            <div class="src" data-pane="letter" hidden>
+              <label class="field-label" for="words">Words</label>
+              <textarea id="words" rows="2" maxlength="80" data-words>Amara</textarea>
+              <div class="font-grid" data-fonts></div>
+              <div class="row-2">
+                <label class="mini-range">Arc <input type="range" min="-100" max="100" value="0" data-arc /></label>
+                <label class="mini-range">Spacing <input type="range" min="-4" max="30" value="2" data-spacing /></label>
+              </div>
+              <label class="check"><input type="checkbox" data-flourish /> Add an underline flourish</label>
+              <details class="personal">
+                <summary>Make it personal</summary>
+                <div class="personal-row">
+                  <label class="field-label" for="pdate">A date in Roman numerals</label>
+                  <div class="inline"><input type="date" id="pdate" data-pdate /><button class="btn btn-small btn-ghost" data-use-date>Use</button></div>
+                </div>
+                <div class="personal-row">
+                  <span class="field-label">Coordinates of a place that matters</span>
+                  <div class="chips chips-tight" data-places></div>
+                </div>
+              </details>
+            </div>
+
+            <div class="src" data-pane="upload" hidden>
+              <label class="drop" data-drop>
+                <input type="file" accept="image/*" data-upload hidden />
+                <span class="drop-title">Drop a drawing or reference</span>
+                <span>A sketch on white paper works best. We lift the lines off the background.</span>
+              </label>
+              <label class="check"><input type="checkbox" data-keep-colour /> Keep the colours</label>
+              <label class="mini-range">Line pickup <input type="range" min="50" max="95" value="80" data-threshold /></label>
+            </div>
+          </section>
+
+          <section class="step" aria-labelledby="s2">
+            <h3 class="step-title" id="s2"><span class="step-n">2</span>Placement</h3>
+            <div class="area-tabs" data-areas></div>
+            <div class="chips" data-zones></div>
+            <div class="side" data-side-wrap>
+              <span>Side</span>
+              <div class="seg seg-small"><button data-side="L" aria-pressed="true">Left</button><button data-side="R">Right</button></div>
+            </div>
+          </section>
+
+          <section class="step" aria-labelledby="s3">
+            <h3 class="step-title" id="s3"><span class="step-n">3</span>Size and angle</h3>
+            <label class="range">
+              <span class="range-top"><span>Size</span><output data-size-out>10 cm</output></span>
+              <input type="range" min="2" max="45" step="0.5" value="10" data-size />
+            </label>
+            <label class="range">
+              <span class="range-top"><span>Rotate</span><output data-rot-out>0°</output></span>
+              <input type="range" min="-180" max="180" step="1" value="0" data-rot />
+            </label>
+            <label class="check"><input type="checkbox" data-flip /> Mirror the design</label>
+          </section>
+
+          <section class="step" aria-labelledby="s4">
+            <h3 class="step-title" id="s4"><span class="step-n">4</span>Skin</h3>
+            <div class="swatches" data-skins></div>
+          </section>
+
+          <section class="step" aria-labelledby="s5">
+            <h3 class="step-title" id="s5"><span class="step-n">5</span>Ink and healing</h3>
+            <div class="ink-row" data-inks></div>
+            <label class="range">
+              <span class="range-top"><span>Age of the tattoo</span><output data-age-out>Healed</output></span>
+              <input type="range" min="0" max="100" value="30" data-age />
+            </label>
+          </section>
+
+          <section class="quote" aria-live="polite" data-quote>
+            <div class="quote-line"><span>Design size</span><strong data-q-size>—</strong></div>
+            <div class="quote-line"><span>Session</span><strong data-q-time>—</strong></div>
+            <div class="quote-line quote-price"><span>Estimate</span><strong data-q-price>—</strong></div>
+            <p class="fine" data-q-note>Place a design to see an estimate.</p>
+            <div class="quote-actions">
+              <button class="btn btn-wide" data-open-booking>Book this tattoo</button>
+              <button class="btn btn-ghost btn-wide" data-share>Copy link to this design</button>
+            </div>
+          </section>
+        </aside>
+      </div>
+    </section>
+
+    <!-- FLASH -->
+    <section class="flash" id="flash" aria-labelledby="flash-title">
+      <div class="section-head">
+        <h2 id="flash-title" class="display">This season’s flash</h2>
+        <p>Drawn in the studio and ready to tattoo. Each one can be resized, mirrored or reworked with your artist. Several were drawn for this city: the Sea Link at dusk, a cutting chai, a monsoon wave.</p>
+      </div>
+      <div class="flash-grid" data-flash-grid></div>
+    </section>
+
+    <!-- PROCESS -->
+    <section class="process" aria-labelledby="process-title">
+      <div class="section-head">
+        <h2 id="process-title" class="display">From preview to skin</h2>
+        <p>The preview gets the conversation started. Your artist takes it from there.</p>
+      </div>
+      <ol class="process-list" data-process></ol>
+    </section>
+
+    <!-- ARTISTS -->
+    <section class="artists" id="artists" aria-labelledby="artists-title">
+      <div class="section-head">
+        <h2 id="artists-title" class="display">Three artists, one quiet room</h2>
+        <p>Every booking is with one artist from consult to healing check.</p>
+      </div>
+      <div class="artist-list" data-artists></div>
+    </section>
+
+    <!-- PRICES -->
+    <section class="prices" id="prices" aria-labelledby="prices-title">
+      <div class="section-head">
+        <h2 id="prices-title" class="display">What it costs</h2>
+        <p>We publish our rates so the estimate in the designer means something. Your artist confirms the final price at consultation.</p>
+      </div>
+      <div class="price-table" data-prices></div>
+    </section>
+
+    <!-- AFTERCARE -->
+    <section class="care" aria-labelledby="care-title">
+      <div class="section-head">
+        <h2 id="care-title" class="display">Healing, Mumbai edition</h2>
+        <p>Humidity, monsoon water and sea air all change how a tattoo heals here. This is what we tell every client.</p>
+      </div>
+      <div class="care-grid">
+        <ol class="care-list" data-care></ol>
+        <div class="monsoon">
+          <h3>June to September</h3>
+          <ul data-monsoon></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq" aria-labelledby="faq-title">
+      <div class="section-head">
+        <h2 id="faq-title" class="display">Questions people ask</h2>
+      </div>
+      <div class="faq-list" data-faq></div>
+    </section>
+
+    <!-- VISIT -->
+    <section class="visit" id="visit" aria-labelledby="visit-title">
+      <div class="visit-copy">
+        <h2 id="visit-title" class="display">Find us on Pali Hill</h2>
+        <address data-address></address>
+        <ul class="directions" data-directions></ul>
+        <dl class="hours" data-hours></dl>
+        <div class="visit-actions">
+          <a class="btn" data-wa-link target="_blank" rel="noopener">Message on WhatsApp</a>
+          <a class="btn btn-ghost" data-maps-link target="_blank" rel="noopener">Open in Maps</a>
+        </div>
+      </div>
+      <div class="visit-map" data-map></div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p class="foot-mark"><span lang="hi">स्याही</span> Siyahi</p>
+    <p data-foot-line></p>
+    <p class="fine">3D body based on the MakeHuman base mesh (CC0). Previews are illustrative; your artist adapts every design to your body.</p>
+  </footer>
+
+  <!-- BOOKING -->
+  <dialog class="booking" data-booking aria-labelledby="book-title">
+    <form method="dialog" class="booking-form" data-booking-form>
+      <div class="booking-head">
+        <h2 id="book-title" class="display">Book a consult</h2>
+        <button class="icon-btn" value="cancel" aria-label="Close" formnovalidate><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      </div>
+      <div class="booking-preview" data-book-preview></div>
+      <div class="form-grid">
+        <label>Your name<input name="name" required autocomplete="name" /></label>
+        <label>Phone or WhatsApp<input name="phone" required inputmode="tel" autocomplete="tel" placeholder="+91" /></label>
+        <label>Artist<select name="artist" data-artist-select><option value="">Whoever suits the design</option></select></label>
+        <label>Preferred date<input type="date" name="date" data-min-today /></label>
+        <label class="span-2">Anything we should know<textarea name="notes" rows="3" placeholder="Allergies, a cover-up, a deadline like a wedding or a trip"></textarea></label>
+      </div>
+      <label class="check"><input type="checkbox" name="adult" required /> I am 18 or older and will bring a photo ID</label>
+      <p class="fine">This opens WhatsApp with your request and a link to your design. We reply within a working day; the ₹2,000 deposit is only taken once you confirm a slot.</p>
+      <button class="btn btn-wide" value="send" data-book-send>Send request on WhatsApp</button>
+    </form>
+  </dialog>
+
+  <div class="toast" role="status" aria-live="polite" data-toast></div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

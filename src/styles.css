@@ -159,7 +159,7 @@ button { cursor: pointer; }
 .stage.is-over-tattoo { cursor: move; }
 .stage:active { cursor: grabbing; }
 
-.viewer-top { position: absolute; top: 16px; left: 16px; right: 16px; display: flex; justify-content: space-between; gap: 8px; pointer-events: none; }
+.viewer-top { position: absolute; top: 16px; left: 16px; right: 16px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; pointer-events: none; }
 .viewer-top > * { pointer-events: auto; }
 .viewer-hint {
   position: absolute; left: 50%; top: 66px; transform: translateX(-50%);
@@ -415,4 +415,13 @@ input[type='range']::-moz-range-thumb { width: 14px; height: 14px; border-radius
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+}
+
+@media (max-width: 560px) {
+  .viewer-top { top: 10px; left: 10px; right: 10px; }
+  .viewer-top .seg-small button { padding: 6px 9px; font-size: 12px; }
+  .viewer-hint { top: auto; bottom: 64px; font-size: 13px; }
+  .viewer-bottom { left: 10px; right: 10px; bottom: 10px; }
+  .layers { max-width: 70%; }
+  .studio { padding-top: 72px; }
 }

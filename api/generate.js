@@ -1,6 +1,7 @@
 // POST /api/generate  { prompt, style, seed }
 // Turns a visitor's idea ("puppy reading the newspaper") into stencil-ready line art.
-// Provider order: Vercel AI Gateway (OIDC, zero-config on Vercel) → OpenAI → Pollinations.
+// Provider order: Cloudflare Workers AI (free daily allowance) → Pollinations key → OpenAI →
+// Vercel AI Gateway (zero-config on Vercel via OIDC) → public Pollinations.
 export const config = { maxDuration: 60 };
 
 const STYLES = {
@@ -65,14 +66,31 @@ export default async function handler(req, res) {
 
 function providers(req) {
   const out = [];
+  if (process.env.CF_ACCOUNT_ID && process.env.CF_API_TOKEN) out.push({ name: 'cloudflare', run: (p, s) => cloudflare(p, s) });
+  if (process.env.POLLINATIONS_KEY) out.push({ name: 'pollinations', run: (p, s) => pollinations(p, s, process.env.POLLINATIONS_KEY) });
+  if (process.env.OPENAI_API_KEY) out.push({ name: 'openai', run: (p) => openai(p) });
   const gatewayKey = process.env.AI_GATEWAY_API_KEY || req.headers['x-vercel-oidc-token'] || process.env.VERCEL_OIDC_TOKEN;
   if (gatewayKey && process.env.DISABLE_AI_GATEWAY !== '1') {
     out.push({ name: 'vercel-ai-gateway', run: (p, s) => gateway(gatewayKey, p, s) });
   }
-  if (process.env.OPENAI_API_KEY) out.push({ name: 'openai', run: (p) => openai(p) });
-  if (process.env.POLLINATIONS_KEY) out.push({ name: 'pollinations', run: (p, s) => pollinations(p, s, process.env.POLLINATIONS_KEY) });
   out.push({ name: 'pollinations-public', run: (p, s) => pollinationsPublic(p, s) });
   return out;
+}
+
+// Cloudflare Workers AI: FLUX.1 schnell, covered by the free daily allowance (no card needed)
+async function cloudflare(prompt, seed) {
+  const model = process.env.CF_IMAGE_MODEL || '@cf/black-forest-labs/flux-1-schnell';
+  const r = await fetch(`https://api.cloudflare.com/client/v4/accounts/${process.env.CF_ACCOUNT_ID}/ai/run/${model}`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${process.env.CF_API_TOKEN}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ prompt: prompt.slice(0, 2000), steps: 6, seed }),
+    signal: AbortSignal.timeout(55000),
+  });
+  if (!r.ok) throw new Error(`${r.status} ${(await r.text()).slice(0, 160)}`);
+  const j = await r.json();
+  const img = j.result?.image;
+  if (!img) throw new Error('empty response');
+  return `data:image/jpeg;base64,${img}`;
 }
 
 async function gateway(key, prompt, seed) {

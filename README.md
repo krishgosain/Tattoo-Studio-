@@ -19,12 +19,13 @@ Built for a fictional fine-line atelier on Pali Hill, Bandra West, Mumbai. Every
 
 ## AI sketching (`/api/generate`)
 
-Provider order, first available wins:
+Provider order, first one configured wins (each falls through to the next on error):
 
-1. **Vercel AI Gateway** — works with zero config on Vercel through the project's OIDC token (or set `AI_GATEWAY_API_KEY`). Default models: `bfl/flux-2-pro`, then `openai/gpt-image-1-mini`, then `google/imagen-4.0-fast-generate-001`. Override with `IMAGE_MODEL` (comma-separated).
-2. `OPENAI_API_KEY` — OpenAI Images (`gpt-image-1`, quality low).
-3. `POLLINATIONS_KEY` — Pollinations Flux.
-4. Public Pollinations endpoint as a last resort.
+1. **Cloudflare Workers AI** (recommended, free daily allowance, no card): set `CF_ACCOUNT_ID` and `CF_API_TOKEN` (a token with *Workers AI* permission). Model `@cf/black-forest-labs/flux-1-schnell`, override with `CF_IMAGE_MODEL`.
+2. `POLLINATIONS_KEY`: Pollinations Flux (free tier after sign-up at enter.pollinations.ai).
+3. `OPENAI_API_KEY`: OpenAI Images (`gpt-image-1`, quality low).
+4. **Vercel AI Gateway**: zero config on Vercel through the project's OIDC token (or `AI_GATEWAY_API_KEY`). Image models generally need purchased Gateway credits. Models: `IMAGE_MODEL` (comma-separated), default `bfl/flux-2-pro,openai/gpt-image-1-mini,google/imagen-4.0-fast-generate-001`.
+5. The public Pollinations endpoint as a last resort.
 
 `GENERATE_LIMIT_PER_HOUR` (default 15) caps requests per visitor IP. Set `DISABLE_AI_GATEWAY=1` to stop using gateway credits.
 

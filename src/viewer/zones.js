@@ -27,7 +27,7 @@ export const ZONES = [
   { id: 'inner-bicep', name: 'Inner bicep', area: 'Arm', p: [0.305, 1.29, 0.03], d: [-0.2, -0.15, 1], size: 9, sided: true, difficulty: 1.2, limb: [0.6, -0.8, 0.04] },
   { id: 'forearm', name: 'Forearm', area: 'Arm', p: [0.47, 1.09, 0.13], d: [0.75, 0.62, -0.2], size: 12, sided: true, difficulty: 1.0, limb: [0.44, -0.53, 0.72] },
   { id: 'inner-forearm', name: 'Inner forearm', area: 'Arm', p: [0.465, 1.085, 0.14], d: [-0.55, -0.5, 0.2], size: 11, sided: true, difficulty: 1.1, limb: [0.44, -0.53, 0.72] },
-  { id: 'wrist', name: 'Wrist', area: 'Arm', p: [0.535, 1.005, 0.26], d: [0.7, 0.7, -0.1], size: 4, sided: true, difficulty: 1.2, limb: [0.44, -0.53, 0.72] },
+  { id: 'wrist', name: 'Wrist', area: 'Arm', p: [0.51, 1.03, 0.205], d: [0.7, 0.7, -0.15], size: 4, sided: true, difficulty: 1.2, limb: [0.44, -0.53, 0.72] },
   { id: 'hand', name: 'Back of hand', area: 'Arm', p: [0.585, 0.969, 0.272], d: [1, 0.1, -0.1], size: 5, sided: true, difficulty: 1.35, limb: [0.05, -0.35, 0.94] },
   // legs
   { id: 'thigh', name: 'Thigh', area: 'Leg', p: [0.1, 0.6, 0.08], d: [0.15, 0, 1], size: 14, sided: true, difficulty: 1.0, limb: [0.06, -1, 0] },

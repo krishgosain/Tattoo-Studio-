@@ -210,6 +210,11 @@ export class Configurator {
       const l = e.target.closest('[data-layer]');
       if (l) this.select(this.tattoos.find((t) => t.id === +l.dataset.layer), true);
     });
+    $('[data-layers]', r).addEventListener('keydown', (e) => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      const l = e.target.closest('[data-layer]');
+      if (l && e.target === l) { e.preventDefault(); this.select(this.tattoos.find((t) => t.id === +l.dataset.layer), true); }
+    });
     $$('input[type=range]', r).forEach(fillRange);
     this.syncOutputs();
   }

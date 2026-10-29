@@ -115,6 +115,8 @@ async function gateway(key, prompt, seed) {
       last = new Error('empty response');
     } else {
       last = new Error(`${model} ${r.status} ${(await r.text()).slice(0, 160)}`);
+      // account-level refusals (no billing, bad token) apply to every model: stop early
+      if ([401, 402, 403].includes(r.status)) break;
     }
   }
   throw last;

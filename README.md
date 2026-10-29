@@ -27,6 +27,8 @@ Provider order, first one configured wins (each falls through to the next on err
 4. **Vercel AI Gateway**: zero config on Vercel through the project's OIDC token (or `AI_GATEWAY_API_KEY`). Image models generally need purchased Gateway credits. Models: `IMAGE_MODEL` (comma-separated), default `bfl/flux-2-pro,openai/gpt-image-1-mini,google/imagen-4.0-fast-generate-001`.
 5. The public Pollinations endpoint as a last resort.
 
+Check which provider answers with `GET /api/generate?selftest=1` (runs one sketch, returns the provider and any errors, not the image).
+
 `GENERATE_LIMIT_PER_HOUR` (default 15) caps requests per visitor IP. Set `DISABLE_AI_GATEWAY=1` to stop using gateway credits.
 
 ## Develop

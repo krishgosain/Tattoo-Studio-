@@ -20,10 +20,11 @@ const LIMIT = Number(process.env.GENERATE_LIMIT_PER_HOUR || 15);
 
 export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
-  if (req.method === 'GET') {
+  const selftest = req.method === 'GET' && req.query?.selftest === '1';
+  if (req.method === 'GET' && !selftest) {
     return res.status(200).json({ ok: true, providers: providers(req).map((p) => p.name) });
   }
-  if (req.method !== 'POST') return res.status(405).json({ error: 'Use POST' });
+  if (req.method !== 'POST' && !selftest) return res.status(405).json({ error: 'Use POST' });
 
   const ip = (req.headers['x-forwarded-for'] || '').split(',')[0] || 'anon';
   const now = Date.now();
@@ -33,7 +34,8 @@ export default async function handler(req, res) {
   }
   list.push(now); hits.set(ip, list);
 
-  const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : req.body || {};
+  const body = selftest ? { prompt: 'A puppy reading the newspaper', style: 'fine-line' }
+    : typeof req.body === 'string' ? JSON.parse(req.body || '{}') : req.body || {};
   const idea = String(body.prompt || '').replace(/\s+/g, ' ').trim().slice(0, 280);
   if (idea.length < 3) return res.status(400).json({ error: 'Describe the tattoo in a few words.' });
   const style = STYLES[body.style] ? body.style : 'fine-line';
@@ -52,12 +54,14 @@ export default async function handler(req, res) {
   for (const p of providers(req)) {
     try {
       const image = await p.run(prompt, seed);
+      if (selftest) return res.status(200).json({ ok: true, provider: p.name, imageBytes: Math.round(image.length * 0.75), tried: errors });
       return res.status(200).json({ image, provider: p.name, seed, style, colour });
     } catch (e) {
       errors.push(`${p.name}: ${e.message}`);
     }
   }
   console.error('generate failed', errors);
+  if (selftest) return res.status(503).json({ ok: false, tried: errors.map((e) => e.slice(0, 220)) });
   return res.status(503).json({
     error: 'The sketching service is not available right now. You can still pick from the flash collection, or send this idea with your booking and an artist will draw it.',
     detail: process.env.VERCEL_ENV === 'production' ? undefined : errors,

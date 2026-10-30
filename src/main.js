@@ -1,36 +1,49 @@
 import './fonts.js';
 import { Configurator, dimsLabel, escapeHtml } from './ui/configurator.js';
 import { PhotoTryOn } from './ui/tryon.js';
-import { Entrance } from './ui/entrance.js';
+import { Film } from './film/film.js';
+import { Preloader, FilmUI } from './ui/film-ui.js';
+import { initSmoothScroll, splitText, initReveals, initCursor, initMagnetic, initMarquee, initHScroll, initArtistFloat, initStack, initUVLens, scrollToEl } from './ui/motion.js';
 import { $, $$, toast, formatINR } from './ui/util.js';
 import { STUDIO, PRICING, ARTISTS, PROCESS, AFTERCARE, MONSOON, FAQ } from './config.js';
 import { FLASH, flashThumb } from './designs/flash.js';
 
 // ---------------------------------------------------------------- static content
 function renderContent() {
-  // flash gallery
-  $('[data-flash-grid]').innerHTML = FLASH.map((d) => `
-    <article class="flash-card">
-      <div class="art"><img src="${flashThumb(d)}" alt="${d.name}, ${d.note}" loading="lazy"></div>
-      <h3>${d.name}</h3>
-      <p>${d.note}</p>
-      <span class="meta">${d.style}</span>
+  // flash gallery: each piece also exists as a violet "UV" twin revealed by a lens under the cursor
+  $('[data-flash-grid]').innerHTML = FLASH.map((d, i) => {
+    const src = flashThumb(d);
+    const uv = src.replace(/%23000/g, '%23c9a2ff');
+    return `
+    <article class="flash-card" data-reveal style="--d:${(i % 6) * 70}ms">
+      <div class="art" data-uv data-cursor="UV">
+        <img class="ink" src="${src}" alt="${d.name}: ${d.note}" loading="lazy">
+        <div class="uv" aria-hidden="true"><img src="${uv}" alt="" loading="lazy"></div>
+      </div>
+      <div class="flash-meta">
+        <span class="flash-n">${String(i + 1).padStart(2, '0')}</span>
+        <h3>${d.name}</h3>
+        <p>${d.note}</p>
+      </div>
       <button class="btn btn-small btn-ghost" data-try-flash="${d.id}">Try it on</button>
-    </article>`).join('');
+    </article>`;
+  }).join('');
 
-  $('[data-process]').innerHTML = PROCESS.map((p) => `<li><h3>${p.title}</h3><p class="time">${p.time}</p><p>${p.text}</p></li>`).join('');
+  $('[data-process]').innerHTML = PROCESS.map((p, i) => `<li class="stack-card" data-stack-card style="--i:${i}"><span class="stack-n">${String(i + 1).padStart(2, '0')}</span><div><p class="time">${p.time}</p><h3>${p.title}</h3><p>${p.text}</p></div></li>`).join('');
 
-  const marks = { meher: 'orchid', kabir: 'chakra' };
+  const marks = { meher: 'orchid', kabir: 'chakra', zoya: 'drishti' };
   $('[data-artists]').innerHTML = ARTISTS.map((a) => {
     const f = FLASH.find((x) => x.id === marks[a.id]);
-    const mark = f
-      ? `<img class="mark" src="${flashThumb(f).replace(/%23000/g, '%23ece4d4')}" alt="">`
-      : `<svg class="mark" viewBox="0 0 120 120" aria-hidden="true"><text x="60" y="80" text-anchor="middle" font-family="Tiro Devanagari Hindi" font-size="56" fill="#ece4d4">ज़ोया</text></svg>`;
-    return `<article class="artist">${mark}<h3>${a.name}</h3><p class="craft">${a.craft}</p><p>${a.bio}</p><p class="facts">${a.years} years tattooing. In the studio ${a.days.toLowerCase()}. Instagram @${a.handle}</p></article>`;
+    return `<li class="artist-row" data-artist-row data-preview="${flashThumb(f)}" data-reveal>
+      <h3 class="artist-name">${a.name}</h3>
+      <p class="artist-craft">${a.craft}</p>
+      <p class="artist-bio">${a.bio}</p>
+      <p class="artist-facts"><span>${a.years} years</span><span>${a.days}</span><span>@${a.handle}</span></p>
+    </li>`;
   }).join('');
   $('[data-artist-select]').insertAdjacentHTML('beforeend', ARTISTS.map((a) => `<option value="${a.name}">${a.name}, ${a.craft.toLowerCase()}</option>`).join(''));
 
-  const ex = (cm2, rate, diff = 1) => formatINR(Math.max(PRICING.minimum, cm2 * rate * diff));
+  const ex = (cm2, rate, diff = 1) => formatINR(Math.round(Math.max(PRICING.minimum, cm2 * rate * diff) / 500) * 500);
   $('[data-prices]').innerHTML = `
     <div class="price-cell"><span class="lbl">Minimum</span><span class="amt">${formatINR(PRICING.minimum)}</span><p>Any tattoo, including a single word or a tiny symbol.</p></div>
     <div class="price-cell"><span class="lbl">Fine-line, per cm²</span><span class="amt">${formatINR(PRICING.perCm2['fine-line'])}</span><p>Script from ${formatINR(PRICING.perCm2.script)}, dotwork ${formatINR(PRICING.perCm2.dotwork)}, colour ${formatINR(PRICING.perCm2.colour)}.</p></div>
@@ -136,8 +149,19 @@ function zoneName(t) {
 // ---------------------------------------------------------------- boot
 async function boot() {
   renderContent();
+  splitText();
+  initSmoothScroll();
+  initReveals();
+  initCursor();
+  initMagnetic();
+  initMarquee(['Fine-line', 'Script in seven alphabets', 'Dotwork', 'Ornamental', 'Micro-realism', 'Mehendi-inspired', 'Cover-ups', 'Single needle']);
+  initHScroll();
+  initArtistFloat();
+  initStack();
+  initUVLens();
   const nav = $('[data-nav]');
-  const onScroll = () => nav.classList.toggle('is-solid', window.scrollY > 40);
+  const studioEl = $('#try');
+  const onScroll = () => nav.classList.toggle('is-solid', studioEl.getBoundingClientRect().top < 90);
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
 
@@ -173,15 +197,25 @@ async function boot() {
   $('[data-flash-grid]').addEventListener('click', async (e) => {
     const b = e.target.closest('[data-try-flash]');
     if (!b) return;
-    studio.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    scrollToEl(studio);
     $('[data-src="flash"]').click();
     await cfg.chooseFlash(FLASH.find((d) => d.id === b.dataset.tryFlash));
   });
 
-  // the opening film first, then the designer
-  const entrance = new Entrance($('[data-entrance]'));
-  try { await entrance.init(); } catch (e) { console.warn('entrance fell back to poster', e); }
-  window.__ent = entrance;
+  // the opening film: preloader tracks real loading, then splits open onto the lane
+  const pre = new Preloader();
+  const film = new Film($('[data-film]'), { onProgress: (v) => pre.progress(v * 0.9) });
+  window.__film = film;
+  try {
+    await document.fonts.ready;
+    await film.init();
+    new FilmUI(film);
+    $('[data-film]').classList.add('is-ready');
+  } catch (e) {
+    console.warn('film fell back to poster', e);
+    $('[data-film]').classList.add('is-fallback');
+  }
+  await pre.finish();
 
   try {
     await cfg.init();

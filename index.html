@@ -1,13 +1,13 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="is-loading">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Siyahi — Fine-line tattoo atelier, Bandra</title>
-  <meta name="description" content="Design your tattoo on a 3D body before you book. Describe any idea, place it anywhere, see it on your skin tone. Fine-line tattoo atelier on Pali Hill, Bandra West, Mumbai." />
-  <meta name="theme-color" content="#0c1b17" />
+  <title>Siyahi — Tattoo atelier, Bandra West</title>
+  <meta name="description" content="Step through an unmarked door in Bandra West into a fine-line tattoo atelier. Watch a tattoo being made, then design yours on a 3D body before you book." />
+  <meta name="theme-color" content="#08090b" />
   <meta property="og:title" content="Siyahi — see it on skin before it's forever" />
-  <meta property="og:description" content="Describe any tattoo idea, place it anywhere on a 3D body, and book with the preview." />
+  <meta property="og:description" content="A fine-line tattoo atelier in Bandra West. Design your tattoo on a 3D body and book with the preview." />
   <meta property="og:image" content="/og.jpg" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="/src/styles.css" />
@@ -15,49 +15,87 @@
 <body>
   <a class="skip" href="#try">Skip to the 3D designer</a>
 
+  <!-- PRELOADER: a needle line draws with real loading progress, then splits like doors -->
+  <div class="preloader" data-preloader aria-hidden="true">
+    <div class="pre-half pre-left"></div>
+    <div class="pre-half pre-right"></div>
+    <div class="pre-core">
+      <p class="pre-mark" lang="hi">स्याही</p>
+      <svg class="pre-line" viewBox="0 0 600 20" preserveAspectRatio="none"><path d="M0 10 C150 10 160 4 300 10 S450 16 600 10" pathLength="1" data-pre-path /></svg>
+      <p class="pre-count"><span data-pre-count>000</span></p>
+      <p class="pre-note">Preparing the studio</p>
+    </div>
+  </div>
+
+  <div class="cursor" data-cursor aria-hidden="true"><span class="cursor-dot"></span><span class="cursor-ring"><span class="cursor-label" data-cursor-label></span></span></div>
+  <div class="grain" aria-hidden="true"></div>
+
   <header class="nav" data-nav>
     <a class="brand" href="#top" aria-label="Siyahi, home">
       <span class="brand-native" lang="hi">स्याही</span>
       <span class="brand-latin">Siyahi</span>
     </a>
     <nav aria-label="Main">
-      <a href="#try">Try it on</a>
-      <a href="#flash">Flash</a>
-      <a href="#artists">Artists</a>
-      <a href="#prices">Prices</a>
-      <a href="#visit">Visit</a>
+      <a href="#try" data-magnetic>Try it on</a>
+      <a href="#flash" data-magnetic>Flash</a>
+      <a href="#artists" data-magnetic>Artists</a>
+      <a href="#prices" data-magnetic>Prices</a>
+      <a href="#visit" data-magnetic>Visit</a>
     </nav>
-    <button class="btn btn-small" data-open-booking>Book a consult</button>
+    <button class="btn btn-small btn-neon" data-open-booking data-magnetic>Book a consult</button>
   </header>
 
   <main id="top">
-    <!-- ENTRANCE: a scroll-driven film rendered live in WebGL -->
-    <section class="entrance" data-entrance aria-labelledby="hero-title">
-      <div class="entrance-sticky" data-entrance-sticky>
-        <img class="entrance-poster" src="/media/hero-poster.jpg" alt="" aria-hidden="true" />
-        <canvas class="entrance-canvas" data-entrance-canvas aria-hidden="true"></canvas>
-        <div class="entrance-shade" aria-hidden="true"></div>
+    <!-- FILM: the studio, rendered live; scroll is the playhead -->
+    <section class="film" data-film aria-labelledby="hero-title">
+      <div class="film-sticky">
+        <img class="film-poster" src="/media/hero-poster.jpg" alt="" aria-hidden="true" />
+        <canvas class="film-canvas" data-film-canvas aria-hidden="true"></canvas>
+        <div class="film-shade" aria-hidden="true"></div>
 
-        <div class="ent-title" data-seg="0,0.14">
-          <p class="ent-native" lang="hi">स्याही</p>
-          <p class="ent-latin">Siyahi</p>
-          <p class="ent-sub">A fine-line tattoo atelier on Pali Hill, Bandra</p>
+        <ol class="chapters" data-chapters aria-hidden="true"></ol>
+
+        <div class="cap cap-open" data-cap="0,0.095" aria-hidden="true">
+          <p class="cap-native" lang="hi" data-split-lines>स्याही</p>
+          <p class="cap-sub" data-split-lines>A tattoo atelier behind an unmarked door in Bandra West.</p>
         </div>
-        <p class="ent-word" data-seg="0.16,0.5" aria-hidden="true">Quietly.</p>
-        <p class="ent-word ent-word-right" data-seg="0.5,0.7" aria-hidden="true">Forever.</p>
+        <div class="cap cap-step" data-cap="0.1,0.235" aria-hidden="true">
+          <p class="cap-big" data-split>Step in.</p>
+        </div>
+        <div class="cap cap-room" data-cap="0.27,0.43" aria-hidden="true">
+          <p class="cap-label">The room</p>
+          <p class="cap-mid" data-split-lines>Flash on the walls, ink on the shelves, and one chair under one lamp.</p>
+        </div>
+        <div class="cap cap-artist" data-cap="0.45,0.6" aria-hidden="true">
+          <p class="cap-label">The artist</p>
+          <p class="cap-mid" data-split-lines>Every piece is drawn by hand, for one body, then inked in one sitting.</p>
+        </div>
+        <div class="cap cap-quiet" data-cap="0.62,0.855" aria-hidden="true">
+          <p class="cap-serif" data-split>Quietly.</p>
+        </div>
+        <div class="cap cap-forever" data-cap="0.86,0.935" aria-hidden="true">
+          <p class="cap-serif" data-split>Forever.</p>
+        </div>
 
-        <div class="hero-copy ent-final" data-seg="0.8,1" data-final>
-          <p class="hero-kicker"><span lang="hi">स्याही</span> is ink. We are a fine-line tattoo atelier on Pali Hill, Bandra.</p>
-          <h1 id="hero-title" class="hero-title">See it on skin before it’s forever.</h1>
-          <p class="hero-lede">Describe any idea in your own words, or pick from our flash. Place it anywhere on a 3D body in your skin tone, resize it to the centimetre, and walk in knowing exactly what you will get.</p>
-          <div class="hero-actions">
-            <a class="btn" href="#try">Design your tattoo</a>
-            <a class="btn btn-ghost" href="#flash">Browse the flash</a>
+        <div class="cap cap-final" data-cap="0.935,1" data-final>
+          <p class="final-kicker"><span lang="hi">स्याही</span> means ink. We are a fine-line tattoo atelier on Pali Hill, Bandra West.</p>
+          <h1 id="hero-title" class="final-title" data-split>See it on skin before it’s forever.</h1>
+          <div class="final-row">
+            <p class="final-lede">Describe any idea, place it on a 3D body in your skin tone, size it to the centimetre, and book with the preview.</p>
+            <div class="final-actions">
+              <a class="btn btn-neon" href="#try" data-magnetic>Design your tattoo</a>
+              <a class="btn btn-ghost" href="#flash" data-magnetic>See the flash</a>
+            </div>
           </div>
         </div>
 
-        <div class="ent-rail" aria-hidden="true"><span data-ent-bar></span></div>
-        <p class="ent-cue" data-ent-cue aria-hidden="true">Scroll to begin</p>
+        <div class="hud" data-hud aria-hidden="true">
+          <p class="hud-row"><span>Pali Hill, Bandra West</span><span>19.0668° N</span><span>72.8268° E</span></p>
+          <p class="hud-row hud-live" data-hud-live></p>
+        </div>
+        <p class="scroll-hint" data-scroll-hint aria-hidden="true"><span>Scroll to enter</span></p>
+        <button class="skip-film" data-skip-film>Skip the film</button>
+        <div class="film-progress" aria-hidden="true"><span data-film-bar></span></div>
       </div>
     </section>
 
@@ -235,38 +273,49 @@
       </div>
     </section>
 
-    <!-- FLASH -->
-    <section class="flash" id="flash" aria-labelledby="flash-title">
-      <div class="section-head">
-        <h2 id="flash-title" class="display">This season’s flash</h2>
-        <p>Drawn in the studio and ready to tattoo. Each one can be resized, mirrored or reworked with your artist. Several were drawn for this city: the Sea Link at dusk, a cutting chai, a monsoon wave.</p>
+    <!-- MARQUEE -->
+    <div class="marquee" data-marquee aria-hidden="true">
+      <div class="marquee-track" data-marquee-track></div>
+    </div>
+
+    <!-- FLASH: pinned horizontal gallery with a UV lens -->
+    <section class="flash" id="flash" aria-labelledby="flash-title" data-hscroll>
+      <div class="flash-pin">
+        <div class="flash-head">
+          <h2 id="flash-title" class="display" data-split>This season’s flash</h2>
+          <p data-reveal>Drawn in the studio, ready to tattoo, and yours to resize or rework. Hover a piece to see it under UV light.</p>
+        </div>
+        <div class="flash-rail" data-hscroll-track>
+          <div class="flash-grid" data-flash-grid></div>
+        </div>
+        <div class="flash-meter" aria-hidden="true"><span data-hscroll-bar></span></div>
       </div>
-      <div class="flash-grid" data-flash-grid></div>
     </section>
 
-    <!-- PROCESS -->
-    <section class="process" aria-labelledby="process-title">
-      <div class="section-head">
-        <h2 id="process-title" class="display">From preview to skin</h2>
-        <p>The preview gets the conversation started. Your artist takes it from there.</p>
-      </div>
-      <ol class="process-list" data-process></ol>
-    </section>
-
-    <!-- ARTISTS -->
+    <!-- ARTISTS: big names with a following preview -->
     <section class="artists" id="artists" aria-labelledby="artists-title">
       <div class="section-head">
-        <h2 id="artists-title" class="display">Three artists, one quiet room</h2>
-        <p>Every booking is with one artist from consult to healing check.</p>
+        <h2 id="artists-title" class="display" data-split>Three artists, one quiet room</h2>
+        <p data-reveal>Every booking stays with one artist, from the first consult to the healing check.</p>
       </div>
-      <div class="artist-list" data-artists></div>
+      <ul class="artist-list" data-artists></ul>
+      <div class="artist-float" data-artist-float aria-hidden="true"><img alt="" data-artist-float-img /></div>
+    </section>
+
+    <!-- PROCESS: sticky stacking cards -->
+    <section class="process" aria-labelledby="process-title">
+      <div class="section-head">
+        <h2 id="process-title" class="display" data-split>From preview to skin</h2>
+        <p data-reveal>The preview starts the conversation. Your artist takes it from there.</p>
+      </div>
+      <ol class="stack" data-process></ol>
     </section>
 
     <!-- PRICES -->
     <section class="prices" id="prices" aria-labelledby="prices-title">
       <div class="section-head">
-        <h2 id="prices-title" class="display">What it costs</h2>
-        <p>We publish our rates so the estimate in the designer means something. Your artist confirms the final price at consultation.</p>
+        <h2 id="prices-title" class="display" data-split>What it costs</h2>
+        <p data-reveal>We publish our rates so the estimate in the designer means something. Your artist confirms the final price at the consult.</p>
       </div>
       <div class="price-table" data-prices></div>
     </section>
@@ -274,12 +323,12 @@
     <!-- AFTERCARE -->
     <section class="care" aria-labelledby="care-title">
       <div class="section-head">
-        <h2 id="care-title" class="display">Healing, Mumbai edition</h2>
-        <p>Humidity, monsoon water and sea air all change how a tattoo heals here. This is what we tell every client.</p>
+        <h2 id="care-title" class="display" data-split>Healing, Mumbai edition</h2>
+        <p data-reveal>Humidity, monsoon water and sea air change how a tattoo heals here. This is what we tell every client.</p>
       </div>
       <div class="care-grid">
         <ol class="care-list" data-care></ol>
-        <div class="monsoon">
+        <div class="monsoon" data-reveal>
           <h3>June to September</h3>
           <ul data-monsoon></ul>
         </div>
@@ -289,7 +338,7 @@
     <!-- FAQ -->
     <section class="faq" aria-labelledby="faq-title">
       <div class="section-head">
-        <h2 id="faq-title" class="display">Questions people ask</h2>
+        <h2 id="faq-title" class="display" data-split>Questions people ask</h2>
       </div>
       <div class="faq-list" data-faq></div>
     </section>
@@ -297,13 +346,13 @@
     <!-- VISIT -->
     <section class="visit" id="visit" aria-labelledby="visit-title">
       <div class="visit-copy">
-        <h2 id="visit-title" class="display">Find us on Pali Hill</h2>
+        <h2 id="visit-title" class="display" data-split>Find the door</h2>
         <address data-address></address>
         <ul class="directions" data-directions></ul>
         <dl class="hours" data-hours></dl>
         <div class="visit-actions">
-          <a class="btn" data-wa-link target="_blank" rel="noopener">Message on WhatsApp</a>
-          <a class="btn btn-ghost" data-maps-link target="_blank" rel="noopener">Open in Maps</a>
+          <a class="btn btn-neon" data-wa-link target="_blank" rel="noopener" data-magnetic>Message on WhatsApp</a>
+          <a class="btn btn-ghost" data-maps-link target="_blank" rel="noopener" data-magnetic>Open in Maps</a>
         </div>
       </div>
       <div class="visit-map" data-map></div>
@@ -311,9 +360,11 @@
   </main>
 
   <footer class="foot">
-    <p class="foot-mark"><span lang="hi">स्याही</span> Siyahi</p>
-    <p data-foot-line></p>
-    <p class="fine">3D body based on the MakeHuman base mesh (CC0). Previews are illustrative; your artist adapts every design to your body.</p>
+    <p class="foot-giant" lang="hi" aria-hidden="true">स्याही</p>
+    <div class="foot-row">
+      <p data-foot-line></p>
+      <p class="fine">3D figures built on the MakeHuman base mesh (CC0). Previews are illustrative; your artist adapts every design to your body.</p>
+    </div>
   </footer>
 
   <!-- BOOKING -->

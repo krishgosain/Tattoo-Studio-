@@ -1,0 +1,14 @@
+<!doctype html><html><body style="margin:0;background:#000"><div data-film style="width:100vw;height:100vh"><div style="width:100%;height:100%"><canvas data-film-canvas style="width:100%;height:100%;display:block"></canvas></div></div>
+<script type="module">
+import '/src/fonts.js';
+import { Film } from '/src/film/film.js';
+const f = new Film(document.querySelector('[data-film]'));
+f.onScroll = () => {};
+await document.fonts.ready;
+await f.init();
+window.F = f; window.go = (p) => { f.p = f.target = p; };
+window.ready = true;
+</script></body></html>
+<script type="module">
+window.cam = (dx,dy,dz, fov=34) => { const F = window.F; F.applyState = ((orig) => function(p,t){ orig.call(this,p,t); const s=this.spot; this.camera.position.set(s.x+dx,s.y+dy,s.z+dz); this.camera.lookAt(s); this.camera.fov=fov; this.camera.updateProjectionMatrix(); })(F.constructor.prototype.applyState); F.p=F.target=0.75; };
+</script>

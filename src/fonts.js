@@ -6,3 +6,6 @@ import '@fontsource/hanken-grotesk/400.css';
 import '@fontsource/hanken-grotesk/500.css';
 import '@fontsource/hanken-grotesk/600.css';
 import '@fontsource/tiro-devanagari-hindi/400.css';
+import '@fontsource/syne/500.css';
+import '@fontsource/syne/700.css';
+import '@fontsource/syne/800.css';

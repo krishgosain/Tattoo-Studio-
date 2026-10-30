@@ -4,6 +4,15 @@ A tattoo studio website whose centrepiece is a **3D try-on**: visitors describe 
 
 Built for a fictional fine-line atelier on Pali Hill, Bandra West, Mumbai. Every studio detail lives in `src/config.js`.
 
+## The opening film
+
+A scroll-driven film rendered live in three.js (`src/film/`): a rainy Bandra lane with a neon sign → the glass doors swing open → down the room past framed flash → the artist at her station → a macro on her gloved hands as a lotus is inked line by line → the lamp clicks off ("Forever.") → pull out to the headline, and the 3D designer slides up over the last frame.
+
+- Figures are the CC0 MakeHuman body posed offline with its game-engine rig (`tools/build_poses.py`, linear blend skinning + IK so the hands land on the pen and forearm), dressed by a region shader.
+- The set is procedural (no downloaded models): concrete, timber battens, rain, light cones, dust, bloom, grain, vignette, chromatic aberration.
+- Overlay choreography (`src/ui/film-ui.js`): preloader driven by real loading progress that splits open like doors, chapter rail, split-text captions, a live HUD (needle telemetry while inking), a skip button.
+- Motion system (`src/ui/motion.js`): Lenis smooth scroll, custom cursor, magnetic buttons, velocity marquee, pinned horizontal flash gallery with a UV lens, cursor-following artist previews, sticky stacking process cards, blur-to-focus reveals. All of it switches off under `prefers-reduced-motion`.
+
 ## What it does
 
 | Area | Detail |

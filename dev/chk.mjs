@@ -1,0 +1,10 @@
+import pw from '/opt/npm-tools/node_modules/playwright/index.js'; const { chromium } = pw;
+const b = await chromium.launch({ args: ['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'] });
+const p = await b.newPage({ viewport: { width: 1280, height: 720 } });
+p.on('pageerror', e => console.log('[pageerror]', e.message));
+await p.goto('http://127.0.0.1:5173/', { waitUntil: 'load' });
+await p.waitForFunction(() => window.ready === true, null, { timeout: 180000 });
+await p.evaluate(() => { const el = document.querySelector('#flash'); window.scrollTo(0, el.getBoundingClientRect().top + scrollY); });
+await p.waitForTimeout(4000);
+console.log(await p.evaluate(() => ({ cards: document.querySelectorAll('.flash-card').length, in: document.querySelectorAll('.flash-card.is-in').length, head: document.querySelector('#flash-title').className, pinned: document.querySelector('[data-hscroll]').className, y: scrollY })));
+await b.close();

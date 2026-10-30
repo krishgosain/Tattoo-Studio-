@@ -31,24 +31,34 @@
   </header>
 
   <main id="top">
-    <!-- HERO -->
-    <section class="hero" aria-labelledby="hero-title">
-      <div class="hero-media" aria-hidden="true">
-        <video class="hero-video" autoplay muted loop playsinline preload="auto" poster="/media/hero-poster.jpg">
-          <source src="/media/hero.mp4" type="video/mp4" />
-        </video>
-        <div class="hero-shade"></div>
-      </div>
-      <div class="hero-copy">
-        <p class="hero-kicker"><span lang="hi">स्याही</span> is ink. We are a fine-line tattoo atelier on Pali Hill, Bandra.</p>
-        <h1 id="hero-title" class="hero-title">See it on skin before it’s forever.</h1>
-        <p class="hero-lede">Describe any idea in your own words, or pick from our flash. Place it anywhere on a 3D body in your skin tone, resize it to the centimetre, and walk in knowing exactly what you will get.</p>
-        <div class="hero-actions">
-          <a class="btn" href="#try">Design your tattoo</a>
-          <a class="btn btn-ghost" href="#flash">Browse the flash</a>
+    <!-- ENTRANCE: a scroll-driven film rendered live in WebGL -->
+    <section class="entrance" data-entrance aria-labelledby="hero-title">
+      <div class="entrance-sticky" data-entrance-sticky>
+        <img class="entrance-poster" src="/media/hero-poster.jpg" alt="" aria-hidden="true" />
+        <canvas class="entrance-canvas" data-entrance-canvas aria-hidden="true"></canvas>
+        <div class="entrance-shade" aria-hidden="true"></div>
+
+        <div class="ent-title" data-seg="0,0.14">
+          <p class="ent-native" lang="hi">स्याही</p>
+          <p class="ent-latin">Siyahi</p>
+          <p class="ent-sub">A fine-line tattoo atelier on Pali Hill, Bandra</p>
         </div>
+        <p class="ent-word" data-seg="0.16,0.5" aria-hidden="true">Quietly.</p>
+        <p class="ent-word ent-word-right" data-seg="0.5,0.7" aria-hidden="true">Forever.</p>
+
+        <div class="hero-copy ent-final" data-seg="0.8,1" data-final>
+          <p class="hero-kicker"><span lang="hi">स्याही</span> is ink. We are a fine-line tattoo atelier on Pali Hill, Bandra.</p>
+          <h1 id="hero-title" class="hero-title">See it on skin before it’s forever.</h1>
+          <p class="hero-lede">Describe any idea in your own words, or pick from our flash. Place it anywhere on a 3D body in your skin tone, resize it to the centimetre, and walk in knowing exactly what you will get.</p>
+          <div class="hero-actions">
+            <a class="btn" href="#try">Design your tattoo</a>
+            <a class="btn btn-ghost" href="#flash">Browse the flash</a>
+          </div>
+        </div>
+
+        <div class="ent-rail" aria-hidden="true"><span data-ent-bar></span></div>
+        <p class="ent-cue" data-ent-cue aria-hidden="true">Scroll to begin</p>
       </div>
-      <p class="hero-foot">Open Tuesday to Sunday. Consults are free and take fifteen minutes.</p>
     </section>
 
     <!-- CONFIGURATOR -->

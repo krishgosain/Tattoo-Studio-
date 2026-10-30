@@ -1,6 +1,7 @@
 import './fonts.js';
 import { Configurator, dimsLabel, escapeHtml } from './ui/configurator.js';
 import { PhotoTryOn } from './ui/tryon.js';
+import { Entrance } from './ui/entrance.js';
 import { $, $$, toast, formatINR } from './ui/util.js';
 import { STUDIO, PRICING, ARTISTS, PROCESS, AFTERCARE, MONSOON, FAQ } from './config.js';
 import { FLASH, flashThumb } from './designs/flash.js';
@@ -177,7 +178,11 @@ async function boot() {
     await cfg.chooseFlash(FLASH.find((d) => d.id === b.dataset.tryFlash));
   });
 
-  // start the 3D work as soon as the page settles; it is the heart of the site
+  // the opening film first, then the designer
+  const entrance = new Entrance($('[data-entrance]'));
+  try { await entrance.init(); } catch (e) { console.warn('entrance fell back to poster', e); }
+  window.__ent = entrance;
+
   try {
     await cfg.init();
   } catch (e) {

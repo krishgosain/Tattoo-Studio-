@@ -113,7 +113,7 @@ button { cursor: pointer; }
 .hero-title {
   font-family: var(--display);
   font-weight: 400;
-  font-size: clamp(52px, 8.4vw, 132px);
+  font-size: clamp(48px, min(8.4vw, 12.5svh), 132px);
   line-height: 0.94;
   letter-spacing: -0.025em;
   margin: 0 0 28px;
@@ -424,4 +424,57 @@ input[type='range']::-moz-range-thumb { width: 14px; height: 14px; border-radius
   .viewer-bottom { left: 10px; right: 10px; bottom: 10px; }
   .layers { max-width: 70%; }
   .studio { padding-top: 72px; }
+}
+
+/* ---------- entrance film ---------- */
+.entrance { position: relative; height: 640svh; background: #070f0c; }
+.entrance.is-static { height: 100svh; }
+.entrance-sticky { position: sticky; top: 0; height: 100svh; overflow: hidden; isolation: isolate; }
+.entrance-poster, .entrance-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.entrance-poster { object-fit: cover; object-position: 70% 40%; z-index: -2; }
+.entrance.is-ready .entrance-poster { display: none; }
+.entrance-canvas { z-index: -1; }
+.entrance-shade {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(120% 90% at 60% 45%, transparent 45%, rgba(5, 12, 10, 0.55) 100%),
+    linear-gradient(90deg, rgba(12, 27, 23, calc(0.88 * var(--ent-final, 0))) 0%, rgba(12, 27, 23, calc(0.55 * var(--ent-final, 0))) 40%, transparent 68%),
+    linear-gradient(0deg, rgba(12, 27, 23, 0.7) 0%, transparent 28%);
+}
+.ent-title { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; gap: 6px; pointer-events: none; }
+.ent-native {
+  margin: 0; padding: 0.2em 0.1em 0.1em; font: 400 clamp(88px, 17vw, 260px)/0.9 var(--deva);
+  -webkit-mask-image: linear-gradient(90deg, #000 calc(var(--k, 0) * 260% - 30%), transparent calc(var(--k, 0) * 260%));
+          mask-image: linear-gradient(90deg, #000 calc(var(--k, 0) * 260% - 30%), transparent calc(var(--k, 0) * 260%));
+}
+.ent-latin { margin: 0; font: italic 400 clamp(26px, 3vw, 40px)/1 var(--display); color: var(--paper-2); }
+.ent-sub { margin: 18px 0 0; font-size: 15px; color: var(--paper-3); letter-spacing: 0.02em; }
+.ent-word {
+  position: absolute; left: var(--gutter); bottom: 9vh; margin: 0;
+  font: italic 400 clamp(64px, 12vw, 200px)/0.9 var(--display); letter-spacing: -0.03em;
+  padding: 0.1em 0.12em 0.28em 0; margin-bottom: -0.28em;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(90deg, #000 calc(var(--k, 0) * 400% - 20%), transparent calc(var(--k, 0) * 400% + 10%));
+          mask-image: linear-gradient(90deg, #000 calc(var(--k, 0) * 400% - 20%), transparent calc(var(--k, 0) * 400% + 10%));
+  text-shadow: 0 2px 40px rgba(0, 0, 0, 0.35);
+}
+.ent-word-right { left: auto; right: var(--gutter); }
+.ent-final { position: absolute; left: var(--gutter); bottom: 9vh; max-width: 760px; transform: translateY(calc((1 - var(--k, 1)) * 24px)); }
+.ent-final .hero-title { margin-bottom: 22px; }
+.ent-rail { position: absolute; left: 18px; top: 50%; height: 120px; width: 1px; transform: translateY(-50%); background: var(--line-2); }
+.ent-rail span { position: absolute; inset: 0; background: var(--paper); transform-origin: top; transform: scaleY(0); }
+.ent-cue { position: absolute; left: 50%; bottom: 28px; transform: translateX(-50%); margin: 0; font-size: 13px; color: var(--paper-2); }
+.ent-cue::after { content: ''; display: block; width: 1px; height: 34px; margin: 10px auto 0; background: linear-gradient(var(--paper-2), transparent); animation: cue 1.8s ease-in-out infinite; transform-origin: top; }
+@keyframes cue { 0% { transform: scaleY(0); } 50% { transform: scaleY(1); } 100% { transform: scaleY(1); opacity: 0; } }
+.entrance.is-static .ent-title, .entrance.is-static .ent-word, .entrance.is-static .ent-cue { display: none; }
+.entrance.is-static .ent-final { opacity: 1 !important; visibility: visible !important; }
+
+/* the designer rises over the last frame of the film */
+.studio { position: relative; z-index: 2; margin-top: -100svh; background: var(--ink); border-radius: 28px 28px 0 0; box-shadow: 0 -30px 80px rgba(0, 0, 0, 0.45); }
+.entrance.is-static + .studio { margin-top: 0; }
+@media (max-width: 860px) {
+  .ent-word { bottom: 22vh; }
+  .ent-final { bottom: 6vh; right: var(--gutter); }
+  .entrance-shade { background: radial-gradient(120% 90% at 50% 40%, transparent 45%, rgba(5, 12, 10, 0.5) 100%), linear-gradient(0deg, rgba(12, 27, 23, calc(0.55 * var(--ent-final, 0) + 0.4)) 0%, rgba(12, 27, 23, calc(0.5 * var(--ent-final, 0))) 55%, transparent 75%); }
+  .ent-rail { display: none; }
 }

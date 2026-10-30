@@ -176,13 +176,28 @@ export class Tattoo {
     const { w, h } = this.dims();
     const depth = Math.min(Math.max(w, h) * 0.6, 0.12);
     const m = projectorMatrix(point, normal, this.rotation, this.upHint);
+    this.matrix = m;
     this.mesh.geometry.dispose();
     this.mesh.geometry = buildDecal(body.baked, m, new THREE.Vector3(w, h, depth));
   }
 }
 
 const tintCache = new WeakMap();
+// canvases whose pixels change over time (the entrance film draws into one) skip the cache
+export const dynamicCanvases = new WeakSet();
 function tinted(src, hex) {
+  if (dynamicCanvases.has(src)) {
+    const c = tinted._scratch || (tinted._scratch = document.createElement('canvas'));
+    c.width = src.width; c.height = src.height;
+    const g = c.getContext('2d');
+    g.clearRect(0, 0, c.width, c.height);
+    g.drawImage(src, 0, 0);
+    g.globalCompositeOperation = 'source-in';
+    g.fillStyle = hex;
+    g.fillRect(0, 0, c.width, c.height);
+    g.globalCompositeOperation = 'source-over';
+    return c;
+  }
   let m = tintCache.get(src);
   if (!m) { m = new Map(); tintCache.set(src, m); }
   if (m.has(hex)) return m.get(hex);
